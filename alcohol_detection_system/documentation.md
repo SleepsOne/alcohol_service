@@ -30,10 +30,7 @@ Content-Type: application/json
 ```json
 {
   "success": true,
-  "message": "User created successfully",
-  "data": {
-    "user_id": 1
-  }
+  "message": "User created successfully"
 }
 ```
 
