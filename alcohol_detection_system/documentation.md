@@ -91,7 +91,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-    "device_id": "string",
+    "device_id": "integer",
     "name": "string",
     "model": "string"
 }
@@ -143,7 +143,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-    "device_id": "string",
+    "device_id": "integer",
     "subject_name": "string",
     "subject_id": "string",
     "subject_age": integer,
