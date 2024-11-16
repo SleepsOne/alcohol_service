@@ -80,9 +80,15 @@ Backend system for managing alcohol detection devices and processing measurement
 
 ### Devices
 
-- GET /api/devices - List all devices
 - POST /api/devices/register - Register new device
-- GET /api/devices/<device_id> - Get device details
+- GET /api/devices - List all devices
+- GET /api/devices/{device_id} - Get device details
+- PUT /api/devices/{device_id}/status - Update Device Status
+- POST /api/devices/{device_id}/calibration - Update Device Calibration
+- GET /api/devices/calibration/needed - Get Devices Needing Calibration
+- GET /api/devices/statistics - Get Device Statistics
+- PUT /api/devices/{device_id} - Update Device
+- DELETE /api/devices/{device_id} - Delete Device
 
 ### Measurements
 
