@@ -75,3 +75,150 @@ def get_all_devices():
             'success': False,
             'message': str(e)
         }), 400
+
+# 1. API cập nhật trạng thái thiết bị
+
+
+@devices_bp.route('/<device_id>/status', methods=['PUT'])
+@jwt_required()
+def update_device_status(device_id):
+    try:
+        data = request.get_json()
+        if 'status' not in data:
+            return jsonify({
+                'success': False,
+                'message': 'Status is required'
+            }), 400
+
+        device = DeviceService.update_device_status(device_id, data['status'])
+        device_schema = DeviceSchema()
+
+        return jsonify({
+            'success': True,
+            'message': 'Device status updated successfully',
+            'data': device_schema.dump(device)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 2. API cập nhật thông tin hiệu chuẩn
+
+
+@devices_bp.route('/<device_id>/calibration', methods=['POST'])
+@jwt_required()
+def update_device_calibration(device_id):
+    try:
+        device = DeviceService.update_calibration(device_id)
+        device_schema = DeviceSchema()
+
+        return jsonify({
+            'success': True,
+            'message': 'Device calibration updated successfully',
+            'data': device_schema.dump(device)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 3. API lấy danh sách thiết bị cần hiệu chuẩn
+
+
+@devices_bp.route('/calibration/needed', methods=['GET'])
+@jwt_required()
+def get_devices_need_calibration():
+    try:
+        devices = DeviceService.get_devices_need_calibration()
+        device_schema = DeviceSchema(many=True)
+
+        return jsonify({
+            'success': True,
+            'data': device_schema.dump(devices)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 4. API lấy thống kê thiết bị
+
+
+@devices_bp.route('/statistics', methods=['GET'])
+@jwt_required()
+def get_device_statistics():
+    try:
+        stats = DeviceService.get_device_statistics()
+        return jsonify({
+            'success': True,
+            'data': stats
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 5. API xóa thiết bị (thêm mới vào service)
+
+
+@devices_bp.route('/<device_id>', methods=['DELETE'])
+@jwt_required()
+def delete_device(device_id):
+    try:
+        DeviceService.delete_device(device_id)
+        return jsonify({
+            'success': True,
+            'message': 'Device deleted successfully'
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 6. API cập nhật thông tin thiết bị
+
+
+@devices_bp.route('/<device_id>', methods=['PUT'])
+@jwt_required()
+def update_device(device_id):
+    try:
+        data = request.get_json()
+        device_schema = DeviceSchema(partial=True)
+        updated_device = DeviceService.update_device(device_id, data)
+
+        return jsonify({
+            'success': True,
+            'message': 'Device updated successfully',
+            'data': device_schema.dump(updated_device)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
+
+# 7. API lấy chi tiết thiết bị
+
+
+@devices_bp.route('/<device_id>', methods=['GET'])
+@jwt_required()
+def get_device_details(device_id):
+    try:
+        device = DeviceService.get_device_by_id(device_id)
+        device_schema = DeviceSchema()
+
+        return jsonify({
+            'success': True,
+            'data': device_schema.dump(device)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 400
