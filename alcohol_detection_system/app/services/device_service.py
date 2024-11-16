@@ -162,3 +162,43 @@ class DeviceService:
             }
         except Exception as e:
             raise ValueError(f'Error getting device statistics: {str(e)}')
+
+    # Thêm
+    @staticmethod
+    def delete_device(device_id):
+        try:
+            device = Device.query.filter_by(device_id=device_id).first()
+            if not device:
+                raise ValueError('Device not found')
+
+            db.session.delete(device)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f'Error deleting device: {str(e)}')
+
+    @staticmethod
+    def update_device(device_id, data):
+        try:
+            device = Device.query.filter_by(device_id=device_id).first()
+            if not device:
+                raise ValueError('Device not found')
+
+            # Update các trường được cho phép
+            allowed_fields = ['name', 'model', 'status']
+            for field in allowed_fields:
+                if field in data:
+                    setattr(device, field, data[field])
+
+            db.session.commit()
+            return device
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f'Error updating device: {str(e)}')
+
+    @staticmethod
+    def get_device_by_id(device_id):
+        device = Device.query.filter_by(device_id=device_id).first()
+        if not device:
+            raise ValueError('Device not found')
+        return device
