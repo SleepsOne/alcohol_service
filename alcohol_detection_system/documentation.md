@@ -91,7 +91,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-    "device_id": "integer",
+    "device_id": "",
     "name": "string",
     "model": "string"
 }
@@ -128,6 +128,101 @@ Authorization: Bearer <token>
     "device_name": "string",
     "status": "active|inactive|maintenance"
   }
+}
+```
+
+### Update Device Status
+
+PUT /api/devices/{device_id}/status
+Request Body:
+
+```json
+{
+  "status": "active|inactive|maintenance"
+}
+```
+
+### Update Device Calibration
+
+POST /api/devices/{device_id}/calibration
+
+### Get Devices Needing Calibration
+
+GET /api/devices/calibration/needed
+
+### Get Device Statistics
+
+GET /api/devices/statistics
+
+### Delete Device
+
+DELETE /api/devices/{device_id}
+
+### Update Device
+
+PUT /api/devices/{device_id}
+Request Body:
+
+```json
+{
+  "name": "string",
+  "model": "string",
+  "status": "string"
+}
+```
+
+### Get Device Details
+
+GET /api/devices/{device_id}
+
+### Get All Devices
+
+GET /api/devices
+
+Query Parameters:
+
+- status (optional): Filter by device status (active/inactive/maintenance)
+- search (optional): Search term for device name or ID
+- page (optional): Page number for pagination (default: 1)
+- per_page (optional): Number of items per page (default: 10)
+
+Response Success (200):
+
+```json
+{
+  "success": true,
+  "data": {
+  "devices": [
+          {
+            "id": integer,
+            "device_id": string,
+            "name": string,
+            "model": string,
+            "status": string,
+            "last_calibration": datetime,
+            "next_calibration": datetime,
+            "registered_by": integer,
+            "created_at": datetime
+          }
+        ],
+        "pagination": {
+            "total_items": integer,
+            "total_pages": integer,
+            "current_page": integer,
+            "per_page": integer,
+            "has_next": boolean,
+            "has_prev": boolean
+        }
+  }
+}
+```
+
+Response Error (400):
+
+```json
+{
+  "success": false,
+  "message": string
 }
 ```
 
